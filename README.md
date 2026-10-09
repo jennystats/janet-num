@@ -8,6 +8,9 @@ Janet symbols in the runtime.
 Part of [Jenny Stats](https://github.com/jennystats), a home for Janet
 data and statistics packages. Jenny is just Janet.
 
+The in-REPL reference: `(doc janet-num)` lists the families, and every
+public function documents its contract via `(doc janet-num/<name>)`.
+
 ## What and why, measured
 
 Janet's numeric loops pay interpreter dispatch per element; the
