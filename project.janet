@@ -3,7 +3,7 @@
   :name "janet-num"
   :description "Small C kernels for Janet's numeric hot paths, via core ffi - no native module"
   :license "AGPL-3.0"
-  :version "0.1.0")
+  :version "0.1.1")
 
 (declare-source
   :source ["janet-num.janet"])
