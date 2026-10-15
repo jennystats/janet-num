@@ -11,11 +11,22 @@ DEST="$HOME/.local/lib/janet-num"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 SRC="$HERE/janet-num.c"
 
-command -v gcc >/dev/null || { echo "error: gcc not found - janet-num requires a C compiler" >&2; exit 1; }
+if ! command -v gcc >/dev/null && ! command -v clang >/dev/null; then
+  case "$(uname -s)" in
+    Darwin) echo "error: no C compiler found - on macOS install one with: xcode-select --install" >&2 ;;
+    Linux)  echo "error: no C compiler found - install one with: sudo apt install build-essential  (Debian/Ubuntu)" >&2
+            echo "       or: sudo dnf install gcc  (Red Hat/Fedora) - or use clang with CC=clang" >&2 ;;
+    *)      echo "error: no C compiler found - janet-num needs a C compiler (gcc or clang) to build libjn.so" >&2 ;;
+  esac
+  exit 1
+fi
+CC="${CC:-gcc}"
+command -v "$CC" >/dev/null || CC=clang
+command -v "$CC" >/dev/null || { echo "error: no C compiler found - janet-num needs gcc or clang to build libjn.so" >&2; exit 1; }
 
 echo "$SRC_SHA256  $SRC" | sha256sum -c -
 
 mkdir -p "$DEST"
-gcc -O2 -Wall -Wextra -shared -fPIC -o "$DEST/libjn.so" "$SRC"
+"$CC" -O2 -Wall -Wextra -shared -fPIC -o "$DEST/libjn.so" "$SRC"
 echo "built: $DEST/libjn.so"
 echo "usage : (import janet-num) - resolution: \$JANET_NUM_LIB, then the path above"

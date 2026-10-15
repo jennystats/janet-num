@@ -93,8 +93,14 @@ janet -e '(import janet-num)
 
 ## Install
 
+**Requirements:** a C compiler and libc headers. Debian/Ubuntu:
+`sudo apt install build-essential`. Fedora/Red Hat: `sudo dnf install
+gcc`. macOS: `xcode-select --install` (clang is used automatically if
+gcc is absent). The build is one shared library, seconds long. Windows:
+run the stack under WSL2.
+
 The kernels are a C library; build once with the pinned installer
-(verified sha256, gcc, idempotent):
+(verified sha256, idempotent):
 
 ```bash
 libs/install-janet-num.sh   # builds ~/.local/lib/janet-num/libjn.so
