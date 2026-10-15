@@ -10,6 +10,10 @@ SRC_SHA256="a39f39cbff9339a26aa5660c0c78bf20f578610aae0c0caa8c7b525a784356a6"
 DEST="$HOME/.local/lib/janet-num"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 SRC="$HERE/janet-num.c"
+# stock macOS has no sha256sum; its perl-based shasum reads the same
+# "<hash>  <path>" checklist format
+CHECKSUM="sha256sum"
+[ "$(uname -s)" = Darwin ] && CHECKSUM="shasum -a 256"
 
 if ! command -v gcc >/dev/null && ! command -v clang >/dev/null; then
   case "$(uname -s)" in
@@ -24,7 +28,7 @@ CC="${CC:-gcc}"
 command -v "$CC" >/dev/null || CC=clang
 command -v "$CC" >/dev/null || { echo "error: no C compiler found - janet-num needs gcc or clang to build libjn.so" >&2; exit 1; }
 
-echo "$SRC_SHA256  $SRC" | sha256sum -c -
+echo "$SRC_SHA256  $SRC" | $CHECKSUM -c -
 
 mkdir -p "$DEST"
 "$CC" -O2 -Wall -Wextra -shared -fPIC -o "$DEST/libjn.so" "$SRC"
