@@ -17,12 +17,23 @@ back empty - **and `typed` is also vendored in this package's
 `jennystats/` directory**, so importing from the repo tree (or a
 checkout on `$JANET_PATH`) works standalone.
 
+## Quick start
+
 All jenny modules install under a `jennystats/` namespace directory:
 `(import jennystats/num)` - collision-proof against bare-name
-shadowing of core symbols or other packages, by construction. Prefer
-a shorter call prefix? Alias at import (e.g.
-`(import jennystats/num :as num)`), or use the `:prefix ""` form
-documented in the usage section below.
+shadowing of core symbols or other packages, by construction.
+
+```janet
+(import jennystats/num :as num)
+
+(def xs (seq [i :range [0 1000000]] i))
+(def packed (num/pack-f64 xs))   # packed handle
+```
+
+The `:as` alias is the form used in this repo's tests; the plain
+import gives the same call sites with the `num/` prefix. The
+`:prefix ""` form (exposing every kernel bare) is covered under
+Gotchas below - it shadows core bitops.
 
 ## What and why, measured
 
