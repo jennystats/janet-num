@@ -8,12 +8,21 @@ Janet symbols in the runtime.
 Part of [Jenny Stats](https://github.com/jennystats), a home for Janet
 data and statistics packages. Jenny is just Janet.
 
-The in-REPL reference: `(doc janet-num)` lists the families, and every
-public function documents its contract via `(doc janet-num/<name>)`.
+The in-REPL reference: `(doc jennystats/num)` lists the families, and every
+public function documents its contract via `(doc num/<name>)`.
 The docstrings need the `typed` module with docstring hoisting:
-`jpm install https://github.com/jennystats/janet-kit` (0.1.1 or
+`jpm install https://github.com/jennystats/janet-kit` (0.1.2 or
 newer). Without it the library computes correctly but `(doc)` comes
-back empty.
+back empty - **and `typed` is also vendored in this package's
+`jennystats/` directory**, so importing from the repo tree (or a
+checkout on `$JANET_PATH`) works standalone.
+
+All jenny modules install under a `jennystats/` namespace directory:
+`(import jennystats/num)` - collision-proof against bare-name
+shadowing of core symbols or other packages, by construction. Prefer
+a shorter call prefix? Alias at import (e.g.
+`(import jennystats/num :as num)`), or use the `:prefix ""` form
+documented in the usage section below.
 
 ## What and why, measured
 
@@ -48,9 +57,9 @@ within one run. Reproduce the pack cells (min of 5, 1M elements; a
 cold process lands at the top of the drift band):
 
 ```bash
-janet -e '(import janet-num)
+janet -e '(import jennystats/num)
 (def xs (seq [i :range [0 1000000]] i))
-(each [nm f] [["pack-f64" janet-num/pack-f64] ["pack-i32" janet-num/pack-i32] ["pack-u64" janet-num/pack-u64] ["pack-i64" janet-num/pack-i64]]
+(each [nm f] [["pack-f64" num/pack-f64] ["pack-i32" num/pack-i32] ["pack-u64" num/pack-u64] ["pack-i64" num/pack-i64]]
   (var best math/inf)
   (for _ 0 5 (f xs) (def t0 (os/clock)) (f xs) (def d (- (os/clock) t0)) (when (< d best) (set best d)))
   (printf "%s 1e6: %.1f ns/e\n" nm (* 1000 best)))'
@@ -59,7 +68,7 @@ janet -e '(import janet-num)
 ## Gotchas
 
 - `band`/`bor`/`bxor` shadow the core bitops under
-  `(import janet-num :prefix "")` - capture the core fns first if you
+  `(import jennystats/num :prefix "")` - capture the core fns first if you
   need both.
 - Packer element errors are the primitives' native messages: ffi/write
   reports `bad slot #1, expected number, got "x"` (element index and
@@ -106,8 +115,8 @@ The kernels are a C library; build once with the pinned installer
 libs/install-janet-num.sh   # builds ~/.local/lib/janet-num/libjn.so
 ```
 
-Then either import by path, symlink `janet-num.janet` into your module
-directory, or:
+Then either import by path, symlink the module tree's `jennystats/num.janet`
+into your module directory (under `jennystats/`), or:
 
 ```bash
 jpm install https://github.com/jennystats/janet-num

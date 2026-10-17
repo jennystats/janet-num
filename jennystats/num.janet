@@ -1,4 +1,4 @@
-# janet-num.janet - small C kernels for Janet's numeric hot paths,
+# jennystats/num.janet - small C kernels for Janet's numeric hot paths,
 # called via core ffi. Public package: janet-num. License: AGPLv3 (see
 # LICENSE). Plain library (built from pinned source by
 # libs/install-janet-num.sh - NOT a native module; no Janet symbols,
@@ -49,12 +49,12 @@
 # found-but-broken rethrows the loader's own error - a wrong remedy is
 # worse than none. The lib stage comes after and is never the cause of
 # a typed failure.
-(def _typed-found (try (first (module/find "typed")) ([_] nil)))
+(def _typed-found (try (first (module/find "jennystats/typed")) ([_] nil)))
 (var _typed-err nil)
-(unless (try (do (import typed :prefix "") true) ([e] (set _typed-err e) false))
+(unless (try (do (import jennystats/typed :prefix "") true) ([e] (set _typed-err e) false))
   (if _typed-found
     (errorf "janet-num: cannot load typed from %s - %s" _typed-found _typed-err)
-    (errorf "janet-num: cannot find typed under %s - set $JANET_PATH to a directory containing typed.janet"
+    (errorf "janet-num: cannot find typed under %s - set $JANET_PATH to a module tree with jennystats/typed.janet"
             (or (dyn *syspath*) "(none)"))))
 
 (put (curenv) :doc

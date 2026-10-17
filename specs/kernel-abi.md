@@ -5,12 +5,12 @@ the module docstrings. This document adds what
 signatures cannot carry: preconditions, effects, status semantics,
 and the memory contract. Misuse of a C ABI produces memory errors
 that tests catch late - this contract is the cheap insurance.
-Binding truth: `janet-num.janet` (ffi/defbind + wrappers);
+Binding truth: `jennystats/num.janet` (ffi/defbind + wrappers);
 C truth: `libs/janet-num.c`.
 
 ## 1. Layering
 
-- **Janet wrapper layer** (janet-num.janet): validation,
+- **Janet wrapper layer** (jennystats/num.janet): validation,
   buffer creation, handle construction, actionable errors. ALL
   argument validation lives in this layer - natively in wrapper code
   or by calling validating core primitives (ffi/write, §2) - the C

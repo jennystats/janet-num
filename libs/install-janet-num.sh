@@ -1,5 +1,5 @@
 #!/bin/bash
-# Build pinned libjn.so for the janet-num module (janet-num.janet at
+# Build pinned libjn.so for the janet-num module (jennystats/num.janet at
 # the repo root). The kernels build from the pinned C source in this
 # repo (libs/janet-num.c) - a plain C library via core ffi, NOT a
 # native module (no Janet symbols, no jpm). The installer verifies the
@@ -33,4 +33,4 @@ echo "$SRC_SHA256  $SRC" | $CHECKSUM -c -
 mkdir -p "$DEST"
 "$CC" -O2 -Wall -Wextra -shared -fPIC -o "$DEST/libjn.so" "$SRC"
 echo "built: $DEST/libjn.so"
-echo "usage : (import janet-num) - resolution: \$JANET_NUM_LIB, then the path above"
+echo "usage : (import jennystats/num) - resolution: \$JANET_NUM_LIB, then the path above"

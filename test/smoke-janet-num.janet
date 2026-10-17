@@ -2,8 +2,8 @@
 # Pure-Janet loops are the oracle (bitwise for f64 paths; the f32
 # section casts via Janet's own number semantics). Requires libjn;
 # skips cleanly when absent.
-(import ../janet-num)
-(import typed :prefix "")
+(import ../jennystats/num :as janet-num)
+(import jennystats/typed :prefix "")
 
 (defn assert-eq [a b msg]
   (unless (deep= a b) (errorf "FAIL %s: %q != %q" msg a b)))

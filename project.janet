@@ -7,4 +7,4 @@
   :dependencies ["https://github.com/jennystats/janet-kit"])
 
 (declare-source
-  :source ["janet-num.janet"])
+  :source ["jennystats/num.janet" "jennystats/typed.janet"])
