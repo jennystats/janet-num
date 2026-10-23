@@ -7,4 +7,5 @@ include:
     file: /templates/gate.yml
     inputs:
       project_name: "janet-num"
+      module_name: "num"
       janet_setup: "libs/install-janet-num.sh"
