@@ -11,8 +11,9 @@ data and statistics packages. Jenny is just Janet.
 The in-REPL reference: `(doc jennystats/num)` lists the families, and every
 public function documents its contract via `(doc num/<name>)`.
 The docstrings need the `typed` module with docstring hoisting:
-`jpm install https://github.com/jennystats/janet-kit` (0.1.2 or
-newer). Without it the library computes correctly but `(doc)` comes
+`jpm install https://github.com/jennystats/janet-kit` (0.1.4 or
+newer - 0.1.4 added the full docstrings this document quotes).
+Without it the library computes correctly but `(doc)` comes
 back empty - **and `typed` is also vendored in this package's
 `jennystats/` directory**, so importing from the repo tree (or a
 checkout on `$JANET_PATH`) works standalone.
