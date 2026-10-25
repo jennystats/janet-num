@@ -9,4 +9,3 @@ include:
       project_name: "janet-num"
       module_name: "num"
       janet_setup: "libs/install-janet-num.sh"
-      pm_expected_red: true
