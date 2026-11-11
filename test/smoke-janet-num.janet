@@ -389,4 +389,26 @@
   "large pack under GC pressure stays exact")
 (:free big-pack)
 
+# -- package shape: siblings resolve from declared dependencies ----------------
+# The package ships one module. A copy of a sibling module in this tree
+# shadows the installed dependency and drifts from it.
+(def repo-root
+  (let [here (string (dyn *current-file*))
+        cut (last (string/find-all "/" here))]
+    (if cut (string (string/slice here 0 cut) "/..") "..")))
+(def sibling-deps {"typed" "janet-kit" "kit" "janet-kit" "num" "janet-num"})
+(def own-modules @["num"])
+(def shipped (os/dir (string repo-root "/jennystats")))
+(each entry shipped
+  (def name (if (string/has-suffix? ".janet" entry)
+              (string/slice entry 0 (- (length entry) 6))
+              entry))
+  (when (nil? (index-of name own-modules))
+    (errorf "FAIL vendored sibling jennystats/%s: that module is the declared %s dependency"
+            entry (get sibling-deps name "other-package"))))
+(each name own-modules
+  (unless (or (not (nil? (index-of (string name ".janet") shipped)))
+              (not (nil? (index-of name shipped))))
+    (errorf "FAIL own module missing from jennystats/: %s" name)))
+
 (print "janet-num smoke ok")

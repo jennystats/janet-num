@@ -14,9 +14,8 @@ The docstrings need the `typed` module with docstring hoisting:
 `jpm install https://github.com/jennystats/janet-kit` (0.1.4 or
 newer - 0.1.4 added the full docstrings this document quotes).
 Without it the library computes correctly but `(doc)` comes
-back empty - **and `typed` is also vendored in this package's
-`jennystats/` directory**, so importing from the repo tree (or a
-checkout on `$JANET_PATH`) works standalone.
+back empty. `typed` is not shipped in this package: janet-kit is a
+declared dependency, and installing the package by URL fetches it.
 
 ## Quick start
 
