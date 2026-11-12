@@ -28,21 +28,22 @@
   (def src "libs/janet-num.c")
   (def so-st (try (os/stat so) ([_] nil)))
   (def src-st (os/stat src))
-  (when (and so-st src-st
-             (>= (get so-st :modified) (get src-st :modified)))
+  (def up-to-date (and so-st src-st
+                       (>= (get so-st :modified) (get src-st :modified))))
+  (if up-to-date
     (print "janet-num: kernel up to date at " so)
-    (break))
-  (def cc (or (get (os/environ) "CC") "cc"))
-  (def code
-    (os/execute ["/bin/sh" "-c"
-                 (string "mkdir -p " (shq dir)
-                         " && " (shq cc) " -O2 -Wall -Wextra -shared -fPIC"
-                         " -o " (shq so) " " (shq src))] :p))
-  (unless (= 0 code)
-    (errorf "janet-num: kernel build failed (%s exit %d) - install a C compiler"
-            cc code))
-  (unless (os/stat so) (error "janet-num: kernel build produced no libjn.so"))
-  (print "janet-num: built " so))
+    (do
+      (def cc (or (get (os/environ) "CC") "cc"))
+      (def code
+        (os/execute ["/bin/sh" "-c"
+                     (string "mkdir -p " (shq dir)
+                             " && " (shq cc) " -O2 -Wall -Wextra -shared -fPIC"
+                             " -o " (shq so) " " (shq src))] :p))
+      (unless (= 0 code)
+        (errorf "janet-num: kernel build failed (%s exit %d) - install a C compiler"
+                cc code))
+      (unless (os/stat so) (error "janet-num: kernel build produced no libjn.so"))
+      (print "janet-num: built " so))))
 
 # jpm owns the "build" target and appends to "install"; spork/declare-cc
 # (what janet-pm runs project.janet under) builds its :build graph. The
