@@ -1,8 +1,8 @@
 # jennystats/num.janet - small C kernels for Janet's numeric hot paths,
 # called via core ffi. Public package: janet-num. License: AGPLv3 (see
-# LICENSE). Plain library (built from pinned source by
-# libs/install-janet-num.sh - NOT a native module; no Janet symbols,
-# same class as the engine libs).
+# LICENSE). Plain library (built from pinned source at install time by
+# the package manifest, or by libs/install-janet-num.sh - NOT a native
+# module; no Janet symbols, same class as the engine libs).
 #
 # Memory model: ALL packed buffers are Janet BUFFERS - ffi/write
 # returns a GC-managed buffer (verified), and kernels write into
@@ -88,7 +88,7 @@ mirror.")
 (ffi/context lib)
 
 (unless (try (do (ffi/native lib) true) ([_] false))
-  (errorf "janet-num: cannot load %s - run libs/install-janet-num.sh (needs gcc) or set $JANET_NUM_LIB" lib))
+  (errorf "janet-num: cannot load %s - install the package (its build compiles the kernel), run libs/install-janet-num.sh, or set $JANET_NUM_LIB" lib))
 
 #==------------------------------------------------------------------------==#
 # Bindings (libs/janet-num.c - signatures verified against the source)

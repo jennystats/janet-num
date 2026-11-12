@@ -119,8 +119,14 @@ gcc`. macOS: `xcode-select --install` (clang is used automatically if
 gcc is absent). The build is one shared library, seconds long. Windows:
 run the stack under WSL2.
 
-The kernels are a C library; build once with the pinned installer
-(verified sha256, idempotent):
+The kernels are a C library. Installing the package builds it: `jpm
+install` and `janet-pm install` both compile `libs/janet-num.c` into
+`~/.local/lib/janet-num/libjn.so` as part of the build, rebuilding only
+when the source is newer. Nothing else is needed for the package-manager
+path.
+
+For a tree that was vendored or copied by hand, the pinned installer
+does the same build (verified sha256, idempotent):
 
 ```bash
 libs/install-janet-num.sh   # builds ~/.local/lib/janet-num/libjn.so
